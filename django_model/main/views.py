@@ -74,9 +74,10 @@ def complete_profile(request):
         user.first_name = first_name
         user.last_name = last_name
         user.save()
-        profile = Profile.objects.get(user=request.user)
-        profile.profession = profession
-        profile.workplace = workplace
-        profile.save()
+        if not user.is_staff:
+            profile = Profile.objects.get(user=request.user)
+            profile.profession = profession
+            profile.workplace = workplace
+            profile.save()
         return redirect('profile')
     return render(request, 'complete_profile.html')
