@@ -17,14 +17,15 @@ class Profile(models.Model):
         return self.user.username
 
 
-class Post(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+class PostDB(models.Model):
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, null=True, blank=True)
     body = models.TextField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True, editable=False)
 
     class Meta:
-        verbose_name = "Post"
+        verbose_name = "PostDB"
         verbose_name_plural = "user's Post"
         ordering = ['profile', 'body', 'created', 'updated']
 

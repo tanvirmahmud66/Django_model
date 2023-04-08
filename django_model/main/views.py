@@ -3,12 +3,14 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .models import Profile
+from .models import Profile, PostDB
 from django.contrib import messages
 # Create your views here.
 
 
 def signup(request):
+    if request.user.is_authenticated:
+        return redirect('profile')
     if request.method == "POST":
         username = request.POST["username"]
         firstname = request.POST["first_name"]
@@ -44,6 +46,8 @@ def signup(request):
 
 
 def login_page(request):
+    if request.user.is_authenticated:
+        return redirect('profile')
     if request.method == "POST":
         username = request.POST["username"]
         password = request.POST["password"]
@@ -120,4 +124,9 @@ def edit_profile(request):
 
 @login_required(login_url='login')
 def create_post(request):
+    if request.method == "POST":
+        post_body = request.POST["body"]
+        profile_model = Profile.objects.get(user=request.user)
+        post = PostDB.objects.create(profile=profile_model, body=post_body)
+        post.save()
     return render(request, 'create_post.html')

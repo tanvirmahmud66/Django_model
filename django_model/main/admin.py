@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, Post
+from .models import Profile, PostDB
 # Register your models here.
 
 
@@ -13,4 +13,4 @@ class PostView(admin.ModelAdmin):
 
 
 admin.site.register(Profile, ProfileView)
-admin.site.register(Post, PostView)
+admin.site.register(PostDB, PostView)
