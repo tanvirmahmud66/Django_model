@@ -4,20 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Your Profile</title>
+    <title>Edit Profile</title>
 </head>
 <body>
     <div>
-        <h3>Complete Your profile</h3><br>
+        <h3>Edit Your profile</h3><br>
         <a href="{%url 'profile'%}">Profile</a>
         <hr>
         <form method="POST">
             {%csrf_token%}
-            <textarea name="bio" id="bio" placeholder="Your Bio"></textarea>
+            <textarea name="bio" id="bio" placeholder="Your Bio">{{profile.bio}}</textarea>
             <br>
-            <input type="text" name="profession" id="profession" placeholder="profession"/>
+            <input type="text" name="first_name" id="first_name" value="{{user.first_name}}"/>
             <br>
-            <input type="workplace" name="workplace" id="workplace" placeholder="wrokplace"/>
+            <input type="text" name="last_name" id="last_name" value="{{user.last_name}}"/>
+            <br>
+            <input type="email" name="email" id="email" value="{{user.email}}"/>
+            <br>
+            <input type="text" name="profession" id="profession" value="{{profile.profession}}"/>
+            <br>
+            <input type="workplace" name="workplace" id="workplace" value="{{profile.workplace}}"/>
             <br>
             <select name="gender" id="gender">
                 <option value="male">Male</option>

@@ -11,6 +11,8 @@ from django.contrib import messages
 def signup(request):
     if request.method == "POST":
         username = request.POST["username"]
+        firstname = request.POST["first_name"]
+        lastname = request.POST["last_name"]
         email = request.POST["email"]
         password = request.POST["password"]
         password2 = request.POST["password2"]
@@ -24,7 +26,7 @@ def signup(request):
                 redirect('signup')
             else:
                 user = User.objects.create_user(
-                    username=username, email=email, password=password)
+                    username=username, email=email, first_name=firstname, last_name=lastname, password=password)
                 user.save()
                 user_model = User.objects.get(username=username)
                 new_profile = Profile.objects.create(
@@ -65,19 +67,52 @@ def profile(request):
 @login_required(login_url='signin')
 def complete_profile(request):
     if request.method == "POST":
-        first_name = request.POST["first_name"]
-        last_name = request.POST["last_name"]
+        bio = request.POST["bio"]
         profession = request.POST["profession"]
         workplace = request.POST["workplace"]
-        user = User.objects.get(username=request.user)
+        gender = request.POST["gender"]
+        relation_ship = request.POST["relationStatus"]
+        user = User.objects.get(id=request.user.id)
         print(user)
-        user.first_name = first_name
-        user.last_name = last_name
-        user.save()
         if not user.is_staff:
             profile = Profile.objects.get(user=request.user)
+            profile.bio = bio
             profile.profession = profession
             profile.workplace = workplace
+            profile.gender = gender
+            profile.relationStatus = relation_ship
             profile.save()
         return redirect('profile')
     return render(request, 'complete_profile.html')
+
+
+@login_required(login_url='signin')
+def edit_profile(request):
+    user = User.objects.get(username=request.user.username)
+    profile = Profile.objects.get(user=request.user)
+    if request.method == "POST":
+        bio = request.POST["bio"]
+        firstname = request.POST["first_name"]
+        lastname = request.POST["last_name"]
+        email = request.POST["email"]
+        profession = request.POST["profession"]
+        workplace = request.POST["workplace"]
+        gender = request.POST["gender"]
+        relation = request.POST["relationStatus"]
+        print(bio, firstname, lastname, email,
+              profession, workplace, gender, relation)
+        user.first_name = firstname
+        user.last_name = lastname
+        user.email = email
+        user.save()
+        profile.bio = bio
+        profile.profession = profession
+        profile.workplace = workplace
+        profile.gender = gender
+        profile.relationStatus = relation
+        profile.save()
+        return redirect('profile')
+    return render(request, 'edit_profile.html', {
+        "user": user,
+        "profile": profile,
+    })
