@@ -15,3 +15,18 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Post(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    body = models.TextField()
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True, editable=False)
+
+    class Meta:
+        verbose_name = "Post"
+        verbose_name_plural = "user's Post"
+        ordering = ['profile', 'body', 'created', 'updated']
+
+    def __str__(self):
+        return f"{self.profile.user.first_name} {self.profile.user.last_name}"

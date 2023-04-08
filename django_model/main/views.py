@@ -116,3 +116,8 @@ def edit_profile(request):
         "user": user,
         "profile": profile,
     })
+
+
+@login_required(login_url='login')
+def create_post(request):
+    return render(request, 'create_post.html')

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile
+from .models import Profile, Post
 # Register your models here.
 
 
@@ -8,4 +8,9 @@ class ProfileView(admin.ModelAdmin):
                     'workplace', 'relationStatus')
 
 
+class PostView(admin.ModelAdmin):
+    list_display = ('profile', 'body', 'created', 'updated')
+
+
 admin.site.register(Profile, ProfileView)
+admin.site.register(Post, PostView)
